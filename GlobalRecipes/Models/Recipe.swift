@@ -1,6 +1,16 @@
 import Foundation
 
-struct Recipe: Codable {
-    var cuisine: String
-    var name: String
+struct Response: Codable {
+    var recipes: [Recipe]
+}
+
+struct Recipe: Identifiable, Codable {
+    var id: UUID = UUID()
+    var cuisine: String?
+    var name: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case cuisine
+        case name
+    }
 }
