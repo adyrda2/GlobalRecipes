@@ -1,7 +1,7 @@
 import Foundation
 
 class ViewModel: ObservableObject {
-    @Published var recipes: [Recipe] = []
+    @MainActor @Published var recipes: [Recipe] = []
     var networkManager: NetworkManager
 
     init(networkManager: NetworkManager) {
@@ -10,10 +10,13 @@ class ViewModel: ObservableObject {
 
     func fetchRecipeData() async {
         do {
-            recipes = try await networkManager.fetchRecipes()
+            let recipes = try await networkManager.fetchRecipes()
+            await MainActor.run {
+                self.recipes = recipes
+            }
         }
         catch {
-//        TODO: HandleError
+            //TODO: handle error
         }
     }
 }

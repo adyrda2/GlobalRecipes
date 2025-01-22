@@ -7,7 +7,6 @@ class NetworkManager {
         self.session = session
     }
 
-    @MainActor
     func fetchRecipes() async throws -> [Recipe] {
         var urlBuilder = URLBuilder(baseURL: BaseURL.development.url, path: Endpoints.recipes.path)
         guard let url = urlBuilder.buildURL() else {
@@ -17,7 +16,7 @@ class NetworkManager {
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw RecipeError.invalidResponse
         }
-        print(response)
+
         do {
             let decoder = JSONDecoder()
             let response = try decoder.decode(Response.self, from: data)
