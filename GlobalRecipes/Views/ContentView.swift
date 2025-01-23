@@ -15,6 +15,9 @@ struct ContentView: View {
                     RecipeCell(recipe: recipe)
                         .listRowBackground(Color.clear)
                 }
+                .refreshable {
+                    await viewModel.fetchRecipeData()
+                }
                 .navigationTitle("Recipes")
             }
         }
