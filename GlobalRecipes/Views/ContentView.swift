@@ -4,20 +4,23 @@ struct ContentView: View {
     @StateObject private var viewModel = ViewModel(networkManager: NetworkManager())
 
     var body: some View {
-        if viewModel.recipes.isEmpty {
-            RecipesEmptyState()
-        } else {
-            NavigationView {
+        NavigationView {
+            if viewModel.status == .failure {
+                MalformedRecipesErrorView()
+            }
+            else if viewModel.recipes.isEmpty && viewModel.status == .success {
+                RecipesEmptyState()
+            } else {
                 List(viewModel.recipes) { recipe in
                     RecipeCell(recipe: recipe)
                         .listRowBackground(Color.clear)
                 }
                 .navigationTitle("Recipes")
             }
-            .scrollContentBackground(.hidden)
-            .task {
-                await viewModel.fetchRecipeData()
-            }
+        }
+        .scrollContentBackground(.hidden)
+        .task {
+            await viewModel.fetchRecipeData()
         }
     }
 }
