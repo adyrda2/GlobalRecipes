@@ -9,9 +9,9 @@ enum Status {
 class ViewModel: ObservableObject {
     @MainActor @Published var recipes: [Recipe] = []
     @MainActor @Published var status: Status = .idle
-    var networkManager: NetworkManager
+    var networkManager: NetworkManagerProtocol
 
-    init(networkManager: NetworkManager) {
+    init(networkManager: NetworkManagerProtocol) {
         self.networkManager = networkManager
     }
 

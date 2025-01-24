@@ -1,6 +1,9 @@
 import Foundation
 
-class NetworkManager {
+protocol NetworkManagerProtocol {
+    func fetchRecipes() async throws -> [Recipe]
+}
+class NetworkManager: NetworkManagerProtocol {
     private var session: URLSession
 
     init(session: URLSession = URLSession.shared) {
