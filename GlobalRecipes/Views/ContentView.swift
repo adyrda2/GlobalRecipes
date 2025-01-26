@@ -5,23 +5,27 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            if viewModel.status == .failure {
+            switch viewModel.status {
+            case .idle:
+                ProgressView()
+            case .failure:
                 MalformedRecipesErrorView()
-            }
-            else if viewModel.recipes.isEmpty && viewModel.status == .success {
-                RecipesEmptyState()
-            } else {
-                List(viewModel.recipes) { recipe in
-                    RecipeCell(recipe: recipe)
-                        .listRowBackground(Color.clear)
+            case .success:
+                if viewModel.recipes.isEmpty {
+                    RecipesEmptyState()
+                } else {
+                    List(viewModel.recipes, id: \.self) { recipe in
+                        RecipeCell(recipe: recipe)
+                            .listRowBackground(Color.clear)
+                    }
+                    .navigationTitle("Recipes")
+                    .scrollContentBackground(.hidden)
+                    .refreshable {
+                        await viewModel.fetchRecipeData()
+                    }
                 }
-                .refreshable {
-                    await viewModel.fetchRecipeData()
-                }
-                .navigationTitle("Recipes")
             }
         }
-        .scrollContentBackground(.hidden)
         .task {
             await viewModel.fetchRecipeData()
         }

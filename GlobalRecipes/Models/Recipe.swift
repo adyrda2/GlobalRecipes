@@ -4,7 +4,7 @@ struct Response: Codable {
     var recipes: [Recipe]
 }
 
-struct Recipe: Identifiable, Codable {
+struct Recipe: Identifiable, Codable, Hashable {
     var id: UUID = UUID()
     var cuisine: String
     var name: String
