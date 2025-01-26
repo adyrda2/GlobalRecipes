@@ -20,6 +20,7 @@ struct ContentView: View {
                     }
                     .navigationTitle("Recipes")
                     .scrollContentBackground(.hidden)
+                    .scrollIndicators(.hidden)
                     .refreshable {
                         await viewModel.fetchRecipeData()
                     }

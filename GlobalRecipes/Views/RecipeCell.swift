@@ -5,14 +5,9 @@ struct RecipeCell: View {
 
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: recipe.photoURLSmall ?? "")) { image in
-                image.resizable(resizingMode: .stretch)
-            } placeholder: {
-                Color.gray
+            if let url = recipe.photoURLSmall {
+                CachedImage(url: url, uuid: recipe.uuid)
             }
-            .frame(width: 100, height: 100)
-            .clipShape(.rect(cornerRadius: 25))
-            .padding(.trailing, 8)
             VStack(alignment: .leading) {
                 Text(recipe.name)
                     .padding(.bottom, 8)
@@ -24,5 +19,5 @@ struct RecipeCell: View {
 }
 
 #Preview {
-    RecipeCell(recipe: Recipe(cuisine: "Italian", name: "Pizza"))
+    RecipeCell(recipe: Recipe(uuid: "1234", cuisine: "Italian", name: "Pizza"))
 }
